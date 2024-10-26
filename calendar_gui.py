@@ -8,9 +8,15 @@ from datetime import datetime
 
 
 class CalendarGui:
+
+    # Переводим в русскую локаль.
+    locale.setlocale(locale.LC_ALL, "")
+
+    month = ['', 'Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль',
+             'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь']
+
     def __init__(self):
-        # Переводим в русскую локаль.
-        locale.setlocale(locale.LC_ALL, "")
+
         # Главное окно программы.
         self.window = tkinter.Tk()
         # Список дней.
@@ -23,15 +29,15 @@ class CalendarGui:
         self.year = self.now.year
 
         # Кнопка "Назад".
-        self.back_button = ttk.Button(text='<', command=self.back)
+        self.back_button = tkinter.Button(text='<', command=self.back)
         self.back_button.grid(row=0, column=0, sticky=NSEW)
 
         # Кнопка "Вперед".
-        self.next_button = ttk.Button(text='>', command=self.next)
+        self.next_button = tkinter.Button(text='>', command=self.next)
         self.next_button.grid(row=0, column=6, sticky=NSEW)
 
         # Информационное окно между кнопками.
-        self.info_label = ttk.Label(text='0', width=1, font='Arial 10 bold')
+        self.info_label = tkinter.Label(text='0', width=1, font='Arial 10 bold')
         self.info_label.grid(row=0, column=1, columnspan=5, sticky=NSEW)
 
         for n in range(7):
@@ -46,9 +52,9 @@ class CalendarGui:
 
         self.fill()
 
-        month = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль',
-                 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь']
-        year = self.year
+
+        # self.month = month
+        # self.year = year
 
         tkinter.mainloop()
 
