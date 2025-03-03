@@ -14,17 +14,17 @@ class GUIPassowrd:
 
     def __init__(self):
         # Переменная для русских букв.
-        self.ru_letters: str = 'йцукенгшщзхъфывапролджэячсмитьбюё'
+        self.__ru_letters: str = 'йцукенгшщзхъфывапролджэячсмитьбюё'
         # Переменная для заглавных руских букв.
-        self.capital_ru_letters: str = 'ЁЙЦУКЕНГШЩЗХЪФЫВАПРОЛДЖЭЯЧСМИТЬБЮ'
+        self.__capital_ru_letters: str = 'ЁЙЦУКЕНГШЩЗХЪФЫВАПРОЛДЖЭЯЧСМИТЬБЮ'
         # Переменная для латинских символов.
-        self.en_letters: str = "qwertyuiopasdfghjklzxcvbnm"
+        self.__en_letters: str = "qwertyuiopasdfghjklzxcvbnm"
         # Переменная для заглавных латинских символов.
-        self.capital_en_letters: str = "QWERTYUIOPASDFGHJKLZXCVBNM"
+        self.__capital_en_letters: str = "QWERTYUIOPASDFGHJKLZXCVBNM"
         # Переменная различных символов.
-        self.sym: str = "!@#$%^&*_-()+=?/.,№;%:|\[]"
+        self.__sym: str = "!@#$%^&*_-()+=?/.,№;%:|\[]"
         # Переменная для цифр.
-        self.num: str = "1234567890"
+        self.__num: str = "1234567890"
 
         # Создаем главное окно программы.
         self.main_window = Tk()
@@ -39,6 +39,7 @@ class GUIPassowrd:
         self.top_frame_1 = Frame()
         # Средний фрейм.
         self.mid_frame = Frame()
+        # Ещё один средний фрейм.
         self.mid_frame_1 = Frame()
         # Нижний фрейм.
         self.bottom_frame = Frame()
@@ -46,27 +47,29 @@ class GUIPassowrd:
         self.bottom_frame_1 = Frame()
 
         # Информационный лейбл.
-        self.label_1 = Label(self.top_frame, text='Введите количество символов в пароле:')
+        self.label_1 = Label(self.top_frame_1, text='Введите количество символов в пароле:')
         # Поле для ввода количества символов в пароле.
-        self.entry_1 = Entry(self.top_frame, width=5, bg='white', justify='right')
+        self.entry_1 = Entry(self.top_frame_1, width=5, bg='white', justify='right')
         # Минимальное количество символов в пароле.
         self.entry_1.insert(0, '10')
         # Ещё один информационный лейбл.
-        self.label_2 = Label(self.top_frame_1, text='Минимальная длина пароля 10 символов!')
+        self.label_2 = Label(self.top_frame, text='Минимальная длина пароля 10 символов!')
 
         self.label_1.pack(padx=(5, 0), pady=5, side='left')
         self.entry_1.pack(padx=(0, 5), pady=5, side='left')
-        self.label_2.pack()
+        self.label_2.pack(pady=(5, 0))
 
+        # Переменная для выбора русски или латинских букв.
         self.radio_var = IntVar()
         self.radio_var.set(1)
+        # Радиокнопки для выбора.
         self.rb_1 = Radiobutton(self.mid_frame, text='Английские буквы', variable=self.radio_var, value=1)
         self.rb_2 = Radiobutton(self.mid_frame, text='Русские буквы', variable=self.radio_var, value=2)
-        self.rb_1.pack(pady=5, side='left')
-        self.rb_2.pack(pady=5, side='left')
+        self.rb_1.pack(pady=(0, 5), side='left')
+        self.rb_2.pack(pady=(0, 5), side='left')
 
         # Создаем кнопку для генерации пароля.
-        self.button_generate = Button(self.bottom_frame, text='Сгенерировать', command=self.generate)
+        self.button_generate = Button(self.bottom_frame, text='Сгенерировать', command=self.__generate)
         self.button_generate.pack(padx=5, pady=5, side='left')
 
         # Информационный лейбл.
@@ -74,7 +77,7 @@ class GUIPassowrd:
         # Поле для показа сгенерированного пароля.
         self.entry_2 = Entry(self.mid_frame_1, width=50, bg='white', justify=CENTER)
         # Создаем кнопку для копирования пароля в буфер обмена.
-        self.button_copy = Button(self.bottom_frame, text='Копировать в буфер обмена', command=self.copy_clipboard)
+        self.button_copy = Button(self.bottom_frame, text='Копировать в буфер обмена', command=self.__copy_clipboard)
 
         self.label_3.pack()
         self.entry_2.pack(padx=5)
@@ -96,8 +99,8 @@ class GUIPassowrd:
         mainloop()
 
 
-    # Функция для генерации пароля.
-    def generate(self):
+    # Вспомогательная функция для генерации пароля.
+    def __generate(self):
 
         # Очищаем поле, которое показывает сгенерированный пароль.
         self.entry_2.delete(0, END)
@@ -116,7 +119,7 @@ class GUIPassowrd:
             lenght: int = 10
 
         # Функция генерация пароля.
-        password = self.generate_password(lenght)
+        password = self.__generate_password(lenght)
 
         # Вставляем полученный пароль в поле показа пароля.
         self.entry_2.insert(0, password)
@@ -133,7 +136,7 @@ class GUIPassowrd:
 
 
     # Функция для копирования пароля в буфер обмена.
-    def copy_clipboard(self):
+    def __copy_clipboard(self):
 
         # Считываем сгенерированный пароль.
         clipboard = self.entry_2.get()
@@ -148,7 +151,9 @@ class GUIPassowrd:
             messagebox.showwarning('Внимание!', 'Пароль не был скопирован!')
 
 
-    def generate_password(self, l):
+    # Основная функция для генерации пароля,
+    # к аргументам добавляем выбранную пользователем длину пароля.
+    def __generate_password(self, l):
 
         # Считываем какие символы выбрал пользователь.
         choice_radio = self.radio_var.get()
@@ -160,14 +165,14 @@ class GUIPassowrd:
         # В зависимости от выбора пользователя, присваиваем
         # переменным либо английские буквы, либо русские буквы.
         if choice_radio == 1:
-            letters = self.en_letters
-            capital_letters = self.capital_en_letters
+            letters = self.__en_letters
+            capital_letters = self.__capital_en_letters
         else:
-            letters = self.ru_letters
-            capital_letters = self.capital_ru_letters
+            letters = self.__ru_letters
+            capital_letters = self.__capital_ru_letters
         # Переменные символов и цифр.
-        sym = self.sym
-        num = self.num
+        sym = self.__sym
+        num = self.__num
 
         # Цикл генерации пароля. Если в сгенерированном пароле
         # будет не хватать одного символа, то цикл будет повторен.
