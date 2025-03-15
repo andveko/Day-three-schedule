@@ -23,7 +23,7 @@ class GUIPassword:
         # Переменная для заглавных латинских символов.
         self.__capital_en_letters: str = "QWERTYUIOPASDFGHJKLZXCVBNM"
         # Переменная различных символов.
-        self.__sym: str = "!@#$%^&*_-()+=?/.,№;%:|[]"
+        self.__sym: str = "!@#$%^&*_-()+=?/.,№;%:|[]{}"
         # Переменная для цифр.
         self.__num: str = "1234567890"
 

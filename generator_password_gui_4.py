@@ -1,7 +1,7 @@
 # Импортируем модули.
 # Модуль tkinter содержит компоненты
 # графического интерфейса пользователя.
-from tkinter import Tk, mainloop, messagebox, IntVar, W, StringVar, CENTER, END
+from tkinter import Tk, mainloop, messagebox, IntVar, W, StringVar, END
 from tkinter.ttk import Frame, Label, Entry, Button, Radiobutton, Checkbutton, LabelFrame
 # Модуль random предоставляет функции для генерации
 # случайного выбора элементов последовательности.
@@ -23,7 +23,7 @@ class GUIPassword:
         # Переменная для заглавных латинских символов.
         self.__capital_en_letters: str = "QWERTYUIOPASDFGHJKLZXCVBNM"
         # Переменная различных символов.
-        self.__sym: str = "!@#$%^&*_-()+=?/.,№;%:|[]"
+        self.__sym: str = "!@#$%^&*_-()+=?/.,№;%:|[]{}"
         # Переменная для цифр.
         self.__num: str = "1234567890"
 
@@ -35,9 +35,9 @@ class GUIPassword:
         # Создаем фреймы. Фреймы помогают
         # упорядочивать элементы в окне программы.
         # Верхний фрейм.
-        self.top_frame = LabelFrame(text='Предупреждение!')
+        self.top_frame = LabelFrame(text='Внимание!')
         # Фрейм создан, что-бы упорядочить
-        # фреймы с радиокнопками и чек боксами.
+        # фреймы с радио кнопками и чек боксами.
         self.main_mid_frame = LabelFrame()
         # Второй верхний фрейм.
         self.top_frame_1 = Frame(self.main_mid_frame)
@@ -60,8 +60,8 @@ class GUIPassword:
         self.entry_1.focus()
         self.label_2 = Label(self.top_frame, text='Длина надежного пароля составляет 10 символов!')
 
-        self.label_1.pack(padx=(21, 0), pady=(10, 5), side='left')
-        self.entry_1.pack(padx=(0, 21), pady=(10, 5), side='left')
+        self.label_1.pack(padx=(21, 0), pady=5, side='left')
+        self.entry_1.pack(padx=(0, 21), pady=5, side='left')
         self.label_2.pack(padx=5, pady=10)
 
         # Переменная для выбора русски или латинских букв.
@@ -73,25 +73,29 @@ class GUIPassword:
         self.rb_1.pack(pady=(0, 5), side='left')
         self.rb_2.pack(pady=(0, 5), side='left')
 
+        # Создаем переменные для чек боксов, присваиваем им значения IntVar.
         self.cb_letters = IntVar()
         self.cb_capital_letters = IntVar()
         self.cb_sym = IntVar()
         self.cb_num = IntVar()
 
+        # При открытии окна программы все чек боксы будут выбраны.
         self.cb_letters.set(1)
         self.cb_capital_letters.set(1)
         self.cb_sym.set(1)
         self.cb_num.set(1)
 
+        # Создаем чек боксы.
         self.cb_cap_let = Checkbutton(self.mid_frame_1, text=' Заглавные буквы', variable=self.cb_capital_letters)
         self.cb_let = Checkbutton(self.mid_frame_1, text=' Строчные буквы', variable=self.cb_letters)
         self.cb_symbols = Checkbutton(self.mid_frame_1, text=' Разные символы', variable=self.cb_sym)
         self.cb_number = Checkbutton(self.mid_frame_1, text=' Цифры', variable=self.cb_num)
 
+        # Упаковываем чек боксы.
         self.cb_cap_let.pack(anchor=W)
         self.cb_let.pack(anchor=W)
         self.cb_symbols.pack(anchor=W)
-        self.cb_number.pack(anchor=W)
+        self.cb_number.pack(anchor=W, pady=(0, 10))
 
         # Создаем кнопку для генерации пароля.
         self.button_generate = Button(self.bottom_frame, text='Сгенерировать', command=self.__generate)
@@ -141,28 +145,44 @@ class GUIPassword:
                 if question:
                     messagebox.showinfo('Предупреждение', 'Длина сгенерированного пароля будет 4 символа!')
                     lenght: int = 4
+                    # Функция очищает поле ввода длинны пароля.
+                    # Устанавливает начальное значение.
+                    # Устанавливает фокус на поле ввода.
+                    self.__set_window_input()
                 else:
-                    self.entry_1.delete(0, END)
-                    self.entry_1.insert(0, '4')
-                    self.entry_1.focus()
+                    # Функция очищает поле ввода длинны пароля.
+                    # Устанавливает начальное значение.
+                    # Устанавливает фокус на поле ввода.
+                    self.__set_window_input()
                     return
         except ValueError:
             # Информируем пользователя.
             messagebox.showerror('Ошибка', 'Вы ввели неверные символы!')
+            # Если пользователь ввел число меньше 4, то задаем ему вопрос.
             question = messagebox.askyesno('Вопрос?', 'Минимальная длина генерируемого пароля 4 символа!\nУстановить длину в 4 символа?')
+            # Получаем ответ пользователя.
             if question:
+                # При положительном ответе пользователя предупреждаем
+                # его о длине созданного пароля и очищаем окно ввода длины пароля.
                 messagebox.showinfo('Предупреждение', 'Длина сгенерированного пароля будет 4 символа!')
                 lenght: int = 4
-                self.entry_1.delete(0, END)
-                self.entry_1.insert(0, '4')
+                # Функция очищает поле ввода длинны пароля.
+                # Устанавливает начальное значение.
+                # Устанавливает фокус на поле ввода.
+                self.__set_window_input()
             else:
-                self.entry_1.delete(0, END)
-                self.entry_1.insert(0, '4')
-                self.entry_1.focus()
+                # Если пользователь даёт отрицательный ответ,
+                # то сначала очищаем окно, затем устанавливаем
+                # в окне ввода длину равную 4. Устанавливаем фокус, и выходим из функции.
+                # Функция очищает поле ввода длинны пароля.
+                # Устанавливает начальное значение.
+                # Устанавливает фокус на поле ввода.
+                self.__set_window_input()
                 return
 
         # Функция генерация пароля.
         password = self.__generate_password(lenght)
+        # Если функция возвращает False, то прерываем функцию.
         if not password:
             return
 
@@ -176,30 +196,32 @@ class GUIPassword:
             pyperclip.copy(password)
             # Окно для информирования пользователя.
             messagebox.showinfo('Внимание!', 'Пароль скопирован в буфер обмена!')
-            self.entry_1.delete(0, END)
-            self.entry_1.insert(0, '4')
-            self.entry_1.focus()
+            # Функция очищает поле ввода длинны пароля.
+            # Устанавливает начальное значение.
+            # Устанавливает фокус на поле ввода.
+            self.__set_window_input()
         else:
             # Окно при отрицательном ответе пользователя.
             messagebox.showwarning('Внимание!', 'Пароль не был скопирован!')
-            self.entry_1.delete(0, END)
-            self.entry_1.insert(0, '4')
-            self.entry_1.focus()
+            # Функция очищает поле ввода длинны пароля.
+            # Устанавливает начальное значение.
+            # Устанавливает фокус на поле ввода.
+            self.__set_window_input()
 
     # Основная функция для генерации пароля,
     # к аргументам добавляем выбранную пользователем длину пароля.
     def __generate_password(self, l):
 
-        # Инициализируем переменную для создания пароля.
-        pas: str = ""
         # Переменные для подсчета количества символов в пароле.
         count_letters, count_capital_letters, count_sym, count_num = 0, 0, 0, 0
+        # Инициализируем переменную для создания пароля.
+        pas: str = ""
 
         # Цикл генерации пароля. Если в сгенерированном пароле
         # будет не хватать одного символа, то цикл будет повторен.
         while count_letters < 1 or count_capital_letters < 1 or count_sym < 1 or count_num < 1:
             # Если пароль был сгенерирован,
-            # то присваиваем переменной пустое значение.
+            # то очищаем переменную.
             pas: str = ""
             # Считываем какие символы выбрал пользователь.
             choice_radio = self.radio_var.get()
@@ -215,14 +237,21 @@ class GUIPassword:
             sym: str = self.__sym
             num: str = self.__num
 
+            # Считываем выбор пользователя. Если пользователь
+            # снял все флажки, то прерываем выполнение функции.
             selection_capital_letters: int = self.cb_capital_letters.get()
             selection_letters: int = self.cb_letters.get()
             selection_symbols: int = self.cb_sym.get()
             selection_number: int = self.cb_num.get()
-            if (selection_capital_letters == 0 and selection_letters == 0 and selection_symbols == 0 and selection_number == 0):
-                messagebox.showerror('Ошибка! Ошибка! Ошибка!', 'Выберите хотя бы один флажок!\nПароль не был сгенерирован!')
+            if (selection_capital_letters == 0 and
+                    selection_letters == 0 and
+                    selection_symbols == 0 and
+                    selection_number == 0):
+                messagebox.showerror('Ошибка! Ошибка! Ошибка!',
+                                     'Выберите хотя бы один флажок!\nПароль не был сгенерирован!')
                 return False
 
+            # При снятии флажка присваиваем переменной пустое значение.
             if selection_capital_letters == 0:
                 capital_letters = ''
             if selection_letters == 0:
@@ -249,6 +278,9 @@ class GUIPassword:
                     count_sym += 1
                 elif _ in num:
                     count_num += 1
+            # Чтобы цикл генерации не получился бесконечным,
+            # при снятии пользователем одного из флажков, то присваиваем
+            # переменным подсчета количества символов единицу.
             if selection_capital_letters == 0:
                 count_capital_letters = 1
             if selection_letters == 0:
@@ -257,6 +289,7 @@ class GUIPassword:
                 count_sym = 1
             if selection_number == 0:
                 count_num = 1
+
         # Возвращаем полученный пароль.
         return pas
 
@@ -274,6 +307,17 @@ class GUIPassword:
         else:
             # Информируем пользователя при пустом поле пароля.
             messagebox.showwarning('Внимание!', 'Пароль не был скопирован!')
+
+    # Функция очищает поле ввода длинны пароля.
+    # Устанавливает начальное значение.
+    # Устанавливает фокус на поле ввода.
+    def __set_window_input(self):
+        # Очищаем поле ввода длины пароля.
+        self.entry_1.delete(0, END)
+        # Устанавливаем начальную длину пароля в 4 символа.
+        self.entry_1.insert(0, '4')
+        # Устанавливаем фокус в поле длины пароля.
+        self.entry_1.focus()
 
 
 if __name__ == '__main__':
