@@ -139,8 +139,8 @@ class GUIPassword:
         try:
             # Если пользователь ввел не числовые символы: - То возникнет ошибка ValueError.
             # Если введенное число меньше 4, то переменной будет присвоено значение 4.
-            lenght: int = int(self.entry_1.get())
-            if lenght < 4:
+            lenght_pasword: int = int(self.entry_1.get())
+            if lenght_pasword < 4:
                 # Выводим информационное окно.
                 question = messagebox.askyesno('Вопрос?', 'Минимальная длина генерируемого пароля 4 символа!\nУстановить длину в 4 символа?')
                 if question:
@@ -182,7 +182,7 @@ class GUIPassword:
                 return
 
         # Функция генерация пароля.
-        password = self.__generate_password(lenght)
+        password = self.__generate_password(lenght_pasword)
         # Если функция возвращает False, то прерываем функцию.
         if not password:
             return
@@ -211,7 +211,7 @@ class GUIPassword:
 
     # Основная функция для генерации пароля,
     # к аргументам добавляем выбранную пользователем длину пароля.
-    def __generate_password(self, l):
+    def __generate_password(self, len_pas):
 
         # Переменные для подсчета количества символов в пароле.
         count_letters, count_capital_letters, count_sym, count_num = 0, 0, 0, 0
@@ -264,7 +264,7 @@ class GUIPassword:
             if selection_number == 0:
                 num = ''
             # Цикл генерации пароля.
-            for _ in range(l):
+            for _ in range(len_pas):
                 # Переменная символа, выбранного случайным образом.
                 x: str = choice(letters + capital_letters + sym + num)
                 # Прибавляем полученный символ к списку.
