@@ -139,8 +139,8 @@ class GUIPassword:
         try:
             # Если пользователь ввел не числовые символы: - То возникнет ошибка ValueError.
             # Если введенное число меньше 4, то переменной будет присвоено значение 4.
-            lenght_pasword: int = int(self.entry_1.get())
-            if lenght_pasword < 4:
+            lenght_password: int = int(self.entry_1.get())
+            if lenght_password < 4:
                 # Выводим информационное окно.
                 question = messagebox.askyesno('Вопрос?', 'Минимальная длина генерируемого пароля 4 символа!\nУстановить длину в 4 символа?')
                 if question:
@@ -182,7 +182,7 @@ class GUIPassword:
                 return
 
         # Функция генерация пароля.
-        password = self.__generate_password(lenght_pasword)
+        password = self.__generate_password(lenght_password)
         # Если функция возвращает False, то прерываем функцию.
         if not password:
             return
